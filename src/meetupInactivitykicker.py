@@ -80,16 +80,12 @@ class MeetupInactivitykicker(object):
             result = MeetupInactivitykicker.driver.find_element_by_xpath("//span[text()=\""
                 + str(status)
                 + "\"]").text
-            print('result: '+str(result))
             if 'no' in result:
                 regex = re.search('\d+ no', result, re.M | re.I).group()
-                print('no: '+str(regex))
             if 'yes' in result:
                 regex = re.search('0 yes', result, re.M | re.I).group()
-                print('yes: '+str(regex))
             if 'None' in result:
                 regex = re.search('None', result, re.M | re.I).group()
-                print('None: '+str(regex))
             return True
         except:
             return False
@@ -115,9 +111,11 @@ class MeetupInactivitykicker(object):
             del MeetupInactivitykicker.member_list[idno]
             try:
                 if self.active('None') or self.active('yes'):
-                    name_regex = "//div[@class='flex-item']/p[@class='text--big text--bold']"
-                    MeetupInactivitykicker.member_name = MeetupInactivitykicker.driver.find_element_by_xpath(name_regex).text
-                    print('Removing '+str(tname)+' from group!')
+                    member_name_regex = "//div[@class='flex-item']/p[@class='text--big text--bold']"
+                    MeetupInactivitykicker.member_name = MeetupInactivitykicker.driver.find_element_by_xpath(member_name_regex).text
+                    print('Removing '
+                        + str(MeetupInactivitykicker.member_name)
+                        + ' from group!')
                     self.remove_member()
                 try:
                     MeetupInactivitykicker.driver.back()
