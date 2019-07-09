@@ -67,7 +67,7 @@ class MeetupInactivitykicker(object):
             except Exception as exception:
                 pass
 
-    def remove_member(self, member):
+    def remove_member(self):
         MeetupInactivitykicker.driver.find_element_by_css_selector("svg.svg.svg--overflow.svg-icon.valign--middle").click()
         MeetupInactivitykicker.driver.find_element_by_class_name('member-actions-menuItem-remove_member.dropdownMenu-item.display--flex.span--100').click()
         if self.send_message:
@@ -110,7 +110,7 @@ class MeetupInactivitykicker(object):
             try:
                 if self.active('None') or self.active('yes'):
                     print('Removing member with idno: '+str(idno)+' from group!')
-                    self.remove_member(member)
+                    self.remove_member()
                 try:
                     MeetupInactivitykicker.driver.back()
                 except:
