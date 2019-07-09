@@ -19,7 +19,7 @@ class MetaMeetupInactivitykicker(type):
             cls.count = 0
         if not hasattr(cls,'member_list'):
             cls.member_list = {}
-        if not hasattr(cls,'site_name'):
+        if not hasattr(cls,'member_name'):
             cls.site_name = None
         if not hasattr(cls,'driver'):
             user_agent = 'Mozilla/5.0 (X11; Linux x86_64; rv:67.0) Gecko/20100101 Firefox/67.0'
@@ -77,13 +77,19 @@ class MeetupInactivitykicker(object):
 
     def active(self, status):
         try:
-            status = MeetupInactivitykicker.driver.find_element_by_xpath("//span[contains(text(),"+str(status)+")]").text
-            if 'no' in status:
-                regex = re.search('\d+', status, re.M | re.I).group()
-            if 'yes' in status:
-                regex = re.search('0', status, re.M | re.I).group()
-            if 'None' in status:
-                regex = re.search('None', status, re.M | re.I).group()
+            result = MeetupInactivitykicker.driver.find_element_by_xpath("//span[text()=\""
+                + str(status)
+                + "\"]").text
+            print('result: '+str(result))
+            if 'no' in result:
+                regex = re.search('\d+ no', result, re.M | re.I).group()
+                print('no: '+str(regex))
+            if 'yes' in result:
+                regex = re.search('0 yes', result, re.M | re.I).group()
+                print('yes: '+str(regex))
+            if 'None' in result:
+                regex = re.search('None', result, re.M | re.I).group()
+                print('None: '+str(regex))
             return True
         except:
             return False
@@ -109,7 +115,9 @@ class MeetupInactivitykicker(object):
             del MeetupInactivitykicker.member_list[idno]
             try:
                 if self.active('None') or self.active('yes'):
-                    print('Removing member with idno: '+str(idno)+' from group!')
+                    name_regex = "//div[@class='flex-item']/p[@class='text--big text--bold']"
+                    MeetupInactivitykicker.member_name = MeetupInactivitykicker.driver.find_element_by_xpath(name_regex).text
+                    print('Removing '+str(tname)+' from group!')
                     self.remove_member()
                 try:
                     MeetupInactivitykicker.driver.back()
