@@ -136,8 +136,8 @@ class MeetupInactivitykicker(object):
                 if self.active('None') or self.active('yes'):
                     member_name_regex = "//div[@class='flex-item']/p[@class='text--big text--bold']"
                     MeetupInactivitykicker.member_name = MeetupInactivitykicker.driver.find_element_by_xpath(member_name_regex).text
-                    #self.remove_member()
-                    self.warn_member()
+                    self.remove_member()
+                    #self.warn_member()
                 self.back()
             except :
                 pass
